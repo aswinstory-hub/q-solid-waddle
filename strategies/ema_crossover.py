@@ -1,5 +1,5 @@
 import pandas as pd
-from strategies.base import Strategy
+from .base import Strategy
 
 
 class EMACrossover(Strategy):
