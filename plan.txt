@@ -1,0 +1,11 @@
+data loader loads data into database
+
+s_backtest runs the strateiges backtest (it is a class)
+
+position sizing has to be mentioned it the strategy file
+
+risk manegement is a seperate class in a seperate file in engines folder
+
+broker is a seperate class in a seperate file in engines folder
+
+finally, a seperate file runs everything, tracks result, and visuals using matplotlib

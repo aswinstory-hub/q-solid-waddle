@@ -1,130 +1,32 @@
+import os
+
 DB_PATH = "prices.db"
 
-tickers = [
-    "SIEMENS",
-    "MPHASIS",
-    "TIINDIA",
-    "HCLTECH",
-    "TRENT",
-    "VOLTAS",
-    "INFY",
-    "PREMIERENE",
-    "JUBLFOOD",
-    "GLENMARK",
-    "PGEL",
-    "TATATECH",
-    "APLAPOLLO",
-    "TATAELXSI",
-    "TORNTPOWER",
-    "AUROPHARMA",
-    "BHARATFORG",
-    "INDIANB",
-    "SBICARD",
-    "LT",
-    "CGPOWER",
-    "TECHM",
-    "WAAREEENER",
-    "TITAN",
-    "TCS",
-    "DMART",
-    "UPL",
-    "PIIND",
-    "UNITDSPR",
-    "MCX",
-    "BDL",
-    "SBIN",
-    "CIPLA",
-    "ASIANPAINT",
-    "SUPREMEIND",
-    "INDUSINDBK",
-    "AXISBANK",
-    "LUPIN",
-    "RELIANCE",
-    "ASTRAL",
-    "HINDZINC",
-    "CHOLAFIN",
-    "PERSISTENT",
-    "DABUR",
-    "DLF",
-    "HAVELLS",
-    "MAZDOCK",
-    "BLUESTARCO",
-    "ADANIENSOL",
-    "HDFCBANK",
-    "COFORGE",
-    "JSWSTEEL",
-    "CUMMINSIND",
-    "JINDALSTEL",
-    "OBEROIRLTY",
-    "LICHSGFIN",
-    "MANKIND",
-    "AUBANK",
-    "TORNTPHARM",
-    "KAYNES",
-    "LAURUSLABS",
-    "TATACONSUM",
-    "MAXHEALTH",
-    "PIDILITIND",
-    "BAJFINANCE",
-    "PATANJALI",
-    "GODREJCP",
-    "HINDALCO",
-    "COLPAL",
-    "ZYDUSLIFE",
-    "CDSL",
-    "ICICIBANK",
-    "HINDUNILVR",
-    "ADANIPORTS",
-    "ADANIGREEN",
-    "SONACOMS",
-    "HDFCAMC",
-    "NESTLEIND",
-    "NAUKRI",
-    "INDHOTEL",
-    "KFINTECH",
-    "SRF",
-    "MARICO",
-    "TVSMOTOR",
-    "INDIGO",
-    "PAYTM",
-    "FORTIS",
-    "SBILIFE",
-    "GRASIM",
-    "SHRIRAMFIN",
-    "AMBUJACEM",
-    "LODHA",
-    "ICICIGI",
-    "MFSL",
-    "BAJAJFINSV",
-    "HAL",
-    "MUTHOOTFIN",
-    "ADANIENT",
-    "LICI",
-    "PRESTIGE",
-    "M&M",
-    "DRREDDY",
-    "HDFCLIFE",
-    "VEDL",
-    "BHARTIARTL",
-    "PNBHOUSING",
-    "SUNPHARMA",
-    "NUVAMA",
-    "POLICYBZR",
-    "KPITTECH",
-    "ICICIPRULI",
-    "DALBHARAT",
-    "PHOENIXLTD",
-    "BSE",
-    "UNOMINDA",
-    "GODREJPROP",
-    "IRCTC",
-    "CAMS"
-]
+# Tickers file path — single source of truth
+_TICKERS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tickers.txt")
 
-def ask_symbol(tickers):
-    print(tickers)
-    symbol = str(input("Select any One Symbol from the above: "))
-    print(f"Nice Choice, {symbol} is a good stock to selet")
 
-    return symbol
-    
+def load_tickers() -> list[str]:
+    """Read tickers from tickers.txt and return as a list (no .NS suffix)."""
+    with open(_TICKERS_FILE, "r") as f:
+        return [line.strip() for line in f if line.strip()]
+
+
+def load_tickers_ns() -> list[str]:
+    """Read tickers from tickers.txt and append .NS suffix for yfinance."""
+    return [t + ".NS" for t in load_tickers()]
+
+
+def ask_symbol() -> str:
+    """Interactive prompt — shows available tickers and validates the input."""
+    tickers = load_tickers()
+    print("\nAvailable symbols:")
+    print(", ".join(tickers))
+
+    while True:
+        symbol = input("\nSelect any one symbol from the above: ").strip().upper()
+        if symbol in tickers:
+            print(f"Nice choice! {symbol} is a great stock to select.")
+            return symbol
+        else:
+            print(f"  '{symbol}' is not in the list. Please try again.")
